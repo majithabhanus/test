@@ -31,7 +31,7 @@ resource "aws_security_group" "Jenkins-sg" {
 
 
 resource "aws_instance" "web" {
-  ami                    = "ami-0b6c6ebed2801a5cb"  #change your ami value according to your aws instance
+  ami                    = "ami-0c398cb65a93047f2"  #change your ami value according to your aws instance
   instance_type          = "t2.large"
   key_name               = "rrr"
   vpc_security_group_ids = [aws_security_group.Jenkins-sg.id]
@@ -43,4 +43,5 @@ resource "aws_instance" "web" {
   root_block_device {
     volume_size = 30
   }
+
 }
