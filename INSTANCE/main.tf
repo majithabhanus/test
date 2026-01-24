@@ -1,19 +1,15 @@
-resource "aws_security_group" "Jenkins-sg" {
-  name        = "Jenkins-Security Group"
-  description = "Open 22,443,80,8080,9000,9100,9090,3000"
+# Security group for Jenkins
+resource "aws_security_group" "jenkins_sg" {
+  name        = "Jenkins-SG"
+  description = "Allow Jenkins and SSH traffic"
 
-  # Define a single ingress rule to allow traffic on all specified ports
   ingress = [
-    for port in [22, 80, 443, 8080, 9000,9100,9090,3000] : {
-      description      = "TLS from VPC"
-      from_port        = port
-      to_port          = port
-      protocol         = "tcp"
-      cidr_blocks      = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      security_groups  = []
-      self             = false
+    for port in [22, 8080] : {
+      description = "Open port ${port}"
+      from_port   = port
+      to_port     = port
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
     }
   ]
 
@@ -25,24 +21,23 @@ resource "aws_security_group" "Jenkins-sg" {
   }
 
   tags = {
-    Name = "Jenkins-sg"
+    Name = "Jenkins-SG"
   }
 }
 
-
-resource "aws_instance" "web" {
-  ami                    = "ami-0c398cb65a93047f2"  #change your ami value according to your aws instance
-  instance_type          = "t2.large"
-  key_name               = "rrr"
-  vpc_security_group_ids = [aws_security_group.Jenkins-sg.id]
+# EC2 instance
+resource "aws_instance" "jenkins" {
+  ami                    = "ami-0b6c6ebed2801a5cb" # Ubuntu 24 AMI
+  instance_type          = "t2.medium"
+  key_name               = "rrr"                    # Replace with your key
+  vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
   user_data              = file("${path.module}/script.sh")
 
-  tags = {
-    Name = "gpt clone1"
-  }
   root_block_device {
     volume_size = 30
   }
 
+  tags = {
+    Name = "Jenkins-Server"
+  }
 }
-
