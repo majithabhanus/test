@@ -1,6 +1,6 @@
 # Security group for Jenkins
 resource "aws_security_group" "jenkins_sg" {
-  name        = "Jenkins-SG"
+  name        = "Jenkins-SG_1"
   description = "Allow Jenkins and SSH traffic"
 
   ingress = [
@@ -41,3 +41,4 @@ resource "aws_instance" "jenkins" {
     Name = "Jenkins-Server"
   }
 }
+
