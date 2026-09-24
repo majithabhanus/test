@@ -100,8 +100,8 @@ resource "aws_security_group" "mumbai" {
 resource "aws_instance" "mumbai" {
   provider = aws.mumbai
 
-  ami           = "ami-01a00762f46d584a1"
-  instance_type = "t3.micro"
+  ami           = "ami-0231a154479eac2ae"
+   instance_type = terraform.workspace == "dev" ? "t3.small" : "t3.medium"
 
   subnet_id = aws_subnet.mumbai.id
 
@@ -209,8 +209,8 @@ locals {
 resource "aws_instance" "singapore" {
   provider = aws.singapore
 
-  ami           = "ami-0532913178263be11"
-  instance_type = "t3.micro"
+  ami           = "ami-0b6a54450673835b6"
+  instance_type = terraform.workspace == "dev" ? "t3.small" : "t3.medium"
 
   subnet_id = aws_subnet.singapore.id
 
